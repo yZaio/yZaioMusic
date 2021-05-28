@@ -1,0 +1,3 @@
+export const CHANGE_CURRENT_SONG = 'player/CHANGE_CURRENT_SONG'
+
+export const CHANGE_LOOP_TYPE = 'player/CHANGE_LOOP_TYPE'
