@@ -21,11 +21,17 @@ const ZYAppPlayFooter =  memo(function(props) {
 
   // react hooks
   useEffect(() => {
+
     dispatch(getSongDetailAction(1847250546))
   },[dispatch])
 
   useEffect(() => {
     audioRef.current.src = getPlaySong(currentSong.id)
+    audioRef.current.play().then(res => {
+      setIsPlaying(true)
+    }).catch(err => {
+      setIsPlaying(false)
+    })
   },[currentSong])
   //歌曲是否播放标志
   const [isPlaying, setIsPlaying] = useState(false);

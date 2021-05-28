@@ -1,4 +1,5 @@
 import React, { memo } from 'react'
+import {useDispatch} from "react-redux";
 
 import { getSizeImage } from "../../utils/format-utils";
 
@@ -8,10 +9,18 @@ import {
   RankingItemContent,
   RankingItemFooter
 } from "./style";
+import {getSongDetailAction} from "../../pages/player/store/actionCreators";
+
 
 const ZYRankingItem =  memo(function(props) {
   const {info} = props
   const { tracks = [] } = info;
+
+  const dispatch = useDispatch()
+
+  const playMusic = ids => {
+    dispatch(getSongDetailAction(ids))
+  }
 
   return (
     <RankingItemWrapper>
@@ -37,8 +46,11 @@ const ZYRankingItem =  memo(function(props) {
                 <div className='item-content'>
                   <div className='text-nowrap'>{item.name}</div>
                   <div className='iconContain'>
-                    <i className='sprite_02 play'></i>
-                    <i className='sprite_icon2 addTo'></i>
+                    <i className='sprite_02 play'
+                       onClick={e => playMusic(item.id)}>
+                    </i>
+                    <i className='sprite_icon2 addTo'>
+                    </i>
                     <i className='sprite_02 collect'></i>
                   </div>
                 </div>
