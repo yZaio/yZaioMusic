@@ -118,3 +118,16 @@ body, textarea, select, input, button {
   color: #fff;
 }
 
+.ant-message .yZaio-music  {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 55px;
+  background-color: rgba(105,205,193,0.5);
+  padding: 0;
+}
+.ant-message .yZaio-music .ant-message-notice-content {
+  background-color: rgba(105,205,193,0.5);
+  color: #666666;
+}
+

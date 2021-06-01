@@ -10,7 +10,8 @@ module.exports = {
       'common': resolve("src/common"),
       'assets': resolve("src/assets"),
       'pages': resolve("src/pages"),
-      'services': resolve("src/services")
+      'services': resolve("src/services"),
+      'utils': resolve("src/utils"),
     }
   }
 }

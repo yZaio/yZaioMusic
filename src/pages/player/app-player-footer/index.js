@@ -2,10 +2,11 @@ import React, {memo, useCallback, useEffect, useRef, useState} from 'react'
 import {useDispatch, useSelector} from "react-redux";
 
 import { Slider } from 'antd';
+import { message } from 'antd';
 
 import { getSizeImage,formatDate,getPlaySong } from "../../../utils/format-utils";
 
-import { getSongDetailAction, changeLoopTyeAction } from "../store/actionCreators";
+import { getSongDetailAction, changeLoopTyeAction, upDownSongAction, changeCurrentLyricIndexAction } from "../store/actionCreators";
 
 import { AppPlayerFooterWrapper } from "./style";
 
@@ -14,9 +15,13 @@ import { AppPlayerFooterWrapper } from "./style";
 const ZYAppPlayFooter =  memo(function(props) {
   // redux hooks
   const dispatch = useDispatch()
-  const { currentSong,loopType } = useSelector(state => ({
+  const { currentSong,loopType, lyricList, currentLyricIndex } = useSelector(state => ({
     currentSong: state.getIn(['player','currentSong']),
-    loopType: state.getIn(['player','loopType'])
+    loopType: state.getIn(['player','loopType']),
+    lyricList: state.getIn(['player','lyricList']),
+    currentLyricIndex: state.getIn(['player','currentLyricIndex'])
+    // songList: state.getIn(['player','songList']),
+    // currentSongIndex: state.getIn(['player','currentSongIndex'])
   }))
 
   // react hooks
@@ -73,6 +78,26 @@ const ZYAppPlayFooter =  memo(function(props) {
       setCurrentTime(e.target.currentTime * 1000)
       setProcessValue( e.target.currentTime * 1000 / duration * 100 )
     }
+    const updateCurrentTime = e.target.currentTime * 1000
+    let i = 0
+    for(; i < lyricList.length; i++) {
+      let lyricItem = lyricList[i]
+      if(updateCurrentTime < lyricItem.time) {
+        break
+      }
+    }
+
+
+    if( i - 1 !== currentLyricIndex ) {
+      dispatch(changeCurrentLyricIndexAction(i - 1))
+      let lyricContent = lyricList[i - 1] && lyricList[i - 1].content
+      message.open({
+        content: lyricContent,
+        key: "lyric",
+        duration: 0,
+        className: 'yZaio-music'
+      })
+    }
 
   }
 
@@ -101,15 +126,29 @@ const ZYAppPlayFooter =  memo(function(props) {
     else dispatch(changeLoopTyeAction(loopType + 1))
   }
 
+  //上一首下一首歌曲
+  const changeSong = (tag) => {
+    dispatch(upDownSongAction(tag))
+  }
+
+  const musicEnded = () => {
+    if(loopType === 2) {
+      audioRef.current.currentTime = 0
+      audioRef.current.play()
+    } else {
+      dispatch(upDownSongAction(1))
+    }
+
+  }
 
 
   return (
     <AppPlayerFooterWrapper className="sprite_player" isPlaying={isPlaying} loopType={loopType}>
       <div className='content wrap-v2'>
         <div className='playControl'>
-          <i className='sprite_player prev'></i>
+          <i className='sprite_player prev' onClick={e => changeSong(-1)}></i>
           <i className='sprite_player play' onClick={e => musicPlayChange()}></i>
-          <i className='sprite_player next'></i>
+          <i className='sprite_player next' onClick={e => changeSong(+1)}></i>
         </div>
         <div className='playInfo'>
           <img src={getSizeImage(picUrl,34)} alt=""/>
@@ -150,7 +189,8 @@ const ZYAppPlayFooter =  memo(function(props) {
       </div>
 
       <audio ref={audioRef}
-             onTimeUpdate={e => timeupdate(e)}/>
+             onTimeUpdate={e => timeupdate(e)}
+             onEnded={e => musicEnded()}/>
     </AppPlayerFooterWrapper>
   )
 })

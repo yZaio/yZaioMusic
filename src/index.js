@@ -6,7 +6,9 @@ import { Provider } from "react-redux";
 
 import "@/assets/css/reset.css"
 
+
 import store from "./store";
+
 
 ReactDOM.render(
   <Provider store={store}>
