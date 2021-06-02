@@ -4,165 +4,121 @@
   <meta charset="UTF-8">
   <title>Title</title>
   <style>
-    .titleContain {
-      padding-left: 10px;
-      border-left: 5px solid #B62A23;
-      line-height: 1;
+    /*.titleContain {*/
+    /*  padding-left: 10px;*/
+    /*  border-left: 5px solid #B62A23;*/
+    /*  line-height: 1;*/
+    /*}*/
+    /*.titleContain .title {*/
+    /*  font-size: 16px;*/
+    /*  font-weight: bold;*/
+    /*}*/
+    /*.titleContain .tip{*/
+    /*  font-size: 14px;*/
+    /*  font-weight: bold;*/
+    /*  color: #7F7F7F;*/
+    /*}*/
+    /*.titleContain .tip span {*/
+    /*  margin-right: 20px;*/
+    /*}*/
+    /*.titleContain .tip span:last-child {*/
+    /*  margin-right: 0;*/
+    /*}*/
+    html, body {
+      height: 100%;
+      overflow: hidden;
     }
-    .titleContain .title {
-      font-size: 16px;
-      font-weight: bold;
+
+    body {
+      width: 100%;
+      height:100%;
+      background: #000;
+      background-size: 100%;
+      perspective: 500px;
+
     }
-    .titleContain .tip{
-      font-size: 14px;
-      font-weight: bold;
-      color: #7F7F7F;
+    .stars {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 4px;
+      height:4px;
+      -webkit-border-radius:50%;
+      -moz-border-radius:50%;
+      border-radius:50%;
+      animation: fly 2s linear infinite;
+      transform-style: preserve-3d;
     }
-    .titleContain .tip span {
-      margin-right: 20px;
+    .stars:before, .stars:after {
+      content: "";
+      position: absolute;
+      width: inherit;
+      height: inherit;
+      box-shadow: inherit;
     }
-    .titleContain .tip span:last-child {
-      margin-right: 0;
+    .stars:before {
+      transform: translateZ(-300px);
+      opacity: .6;
+    }
+    .stars:after {
+      transform: translateZ(-600px);
+      opacity: .4;
+    }
+
+    @keyframes fly {
+      from {
+        transform: translateZ(0px);
+        opacity: .6;
+      }
+      to {
+        transform: translateZ(300px);
+        opacity: 1;
+      }
     }
   </style>
 </head>
 <body>
+<div class="stars"></div>
 
-  <div class="titleContain">
-    <span class="title">评星定级结果</span>
-    <span class="tip">
-      (<span>五星党员：2</span>
-      <span>四星党员：2</span>
-      <span>三星党员：2</span>
-      <span>二星党员：2</span>
-      <span>一星党员：2</span>
-      <span>无星级：2</span>)
-    </span>
-  </div>
+<!--  <div class="titleContain">-->
+<!--    <span class="title">评星定级结果</span>-->
+<!--    <span class="tip">-->
+<!--      (<span>五星党员：2</span>-->
+<!--      <span>四星党员：2</span>-->
+<!--      <span>三星党员：2</span>-->
+<!--      <span>二星党员：2</span>-->
+<!--      <span>一星党员：2</span>-->
+<!--      <span>无星级：2</span>)-->
+<!--    </span>-->
+<!--  </div>-->
 
 <script>
-  !function () {
-    let num = 100;
-    //设置所画线的颜色
-    let colorLine = "138,43,226"
-    //创建画布
-    let canvas = document.createElement('canvas');
-    //将创建的画布添加至body标签当中
-    document.getElementsByTagName('div')[0].appendChild(canvas)
-    let ctx = canvas.getContext('2d');
-    //获取当前页面的宽高,并同时设置给予画布
-    let myWidth = canvas.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-    let myHeight = canvas.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-    let newCircleArray,allCircle = []
+  var w = document.documentElement.clientWidth*1.2;
+  var h = document.documentElement.clientHeight*1.2;
+  var star = document.getElementsByClassName("stars")[0];
+  var n = 1000;
+  //随机函数
+  function randomNum(m, n) {
+    return Math.floor(Math.random() * (n - m + 1) + m);
+  }
+  var str = '';
+  for (var i = 0; i < n; i++) {
+    var numX = randomNum(-w, w);
+    var numY = randomNum(-h, h);
+    var color = 'rgb(' + randomNum(0, 255) + ',' + randomNum(0, 255) + ',' + randomNum(0, 255) + ')';
+    str += numX +'px'+' ' + numY+'px'+' '+ color+',';
+  }
+  str = str.slice(0,-1);
+  star.style.boxShadow =  str;
 
-    //获取动画帧，用于更新动画
-    let ani = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
-      function (n) {
-        window.setTimeout(n, 1e3 / 45)
-      };
-    //首先创建两百个点，随机分布在屏幕当中
-    for (let i = 0; i < num; i++) {
-      let x = Math.random() * myWidth;
-      let y = Math.random() * myHeight;
-      //便宜量
-      let offX = Math.random() * 2 - 1;
-      let offY = Math.random() * 2 - 1;
-      //将所画圆的坐标存储在数组当中
-      allCircle.push({x: x, y: y, offX: offX * .5, offY: offY * .5, maxLen: 8e3})
-      drawCircle(x, y, .5)
-    }
 
-    //画圆函数
-    function drawCircle(x, y, r, startAngel = 0, endAngel = Math.PI * 2) {
-      ctx.save()
-      ctx.beginPath();
-      ctx.arc(x, y, r, startAngel, endAngel);
-      ctx.fillStyle = "red"
-      ctx.fill()
-      ctx.restore()
-    }
+  $(function(){
 
-    function moveCircle() {
-      ctx.clearRect(0, 0, myWidth, myHeight)
-      allCircle.forEach((value, index) => {
-        //偏移量取-1到1，存储在数组当中直接使用
-        value.x += value.offX
-        value.y += value.offY
-        //在进行位移后，如果坐标超出了屏幕，需要对便宜量进行取反
-        value.offX *= value.x > myWidth || value.x < 0 ? -1 : 1;
-        value.offY *= value.y > myHeight || value.y < 0 ? -1 : 1;
-        drawCircle(value.x, value.y, .5)
-      })
-      drawLine()
-      ani(moveCircle)
-    }
-    let mouse={x:null,y:null,maxLen: 6e3};
-    //将鼠标坐标添加进所有圆点数组当中
-    newCircleArray= allCircle.concat([mouse]);
-    console.log(newCircleArray);
-    //给鼠标添加移动事件
-    document.onmousemove = function (e) {
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
-    }
-    document.onmouseout = function (){
-      mouse.x = null;
-      mouse.y = null
-    }
-    //进行画线
-    function drawLine() {
-      allCircle.forEach(function (value, index) {
-        //对所有圆点进行遍历，如果有满足条件的则进行连线
-        //1、判断两点的距离是否满足设定值
+    $('#main').fadeOut();
 
-        //value值和剩余的圆点数据进行匹配
-        for (let i = index + 1; i < newCircleArray.length; i++) {
-          if(newCircleArray[i].x!=null && newCircleArray[i].y!=null){
-            let xWidth,yHeight;
-            xWidth = (newCircleArray[i].x - value.x) * (newCircleArray[i].x - value.x);
-            yHeight = (newCircleArray[i].y - value.y) * (newCircleArray[i].y - value.y);
-            //斜边的平方
-            let zLen = xWidth + yHeight;
-            //向连线方向进行偏移
-            if (zLen < value.maxLen) {
-              if(newCircleArray[i] === mouse && mouse.x!=null && zLen>mouse.maxLen){
-                //如果连线的是鼠标这个点，那么在达到最大长度时，需要修改偏移量,进行反向偏移一段距离，看起来会有跟随效果
-                //可自行调整相乘的小数值，越大吸附能力越强，同时抖动也越厉害
-                value.x +=(newCircleArray[i].x- value.x)*.01
-                value.y +=(newCircleArray[i].y-value.y)*.01
-              }
-              //计算透明度
-              let opacity = 1 - zLen / value.maxLen
-              ctx.save()
-              //满足条件，开始连线
-              ctx.beginPath();
-              //设置画笔起始点
-              ctx.moveTo(value.x, value.y);
-              //设置画笔终点
-              ctx.lineTo(newCircleArray[i].x, newCircleArray[i].y);
-              //1、单一颜色写法
-              // ctx.strokeStyle = "rgba("+colorLine+","+opacity+")";
-              //2、渐变线条写法
-              let grd = ctx.createLinearGradient(value.x, value.y, newCircleArray[i].x, newCircleArray[i].y)
-              grd.addColorStop(1 / 7, "rgba(255,0,0,"+opacity+")");
-              grd.addColorStop(2 / 7, "rgba(255,165,0,"+opacity+")");
-              grd.addColorStop(3 / 7, "rgba(255,255,0,"+opacity+")");
-              grd.addColorStop(4 / 7, "rgba(0,255,0,"+opacity+")");
-              grd.addColorStop(5 / 7, "rgba(0,255,255,"+opacity+")");
-              grd.addColorStop(6 / 7, "rgba(0,0,255,"+opacity+")");
-              grd.addColorStop(1, "rgba(139,0,255,"+opacity+")");
-              ctx.strokeStyle = grd
-              ctx.stroke();
-              ctx.restore();
-            }
-          }
+    $('#main').fadeIn('slow');
 
-        }
-      })
-    }
-    //让圆动起来
-    moveCircle()
-  }();
+  })
 
 </script>
 

@@ -15,12 +15,12 @@ import { AppPlayerFooterWrapper } from "./style";
 const ZYAppPlayFooter =  memo(function(props) {
   // redux hooks
   const dispatch = useDispatch()
-  const { currentSong,loopType, lyricList, currentLyricIndex } = useSelector(state => ({
+  const { currentSong,loopType, lyricList, currentLyricIndex, songList } = useSelector(state => ({
     currentSong: state.getIn(['player','currentSong']),
     loopType: state.getIn(['player','loopType']),
     lyricList: state.getIn(['player','lyricList']),
-    currentLyricIndex: state.getIn(['player','currentLyricIndex'])
-    // songList: state.getIn(['player','songList']),
+    currentLyricIndex: state.getIn(['player','currentLyricIndex']),
+    songList: state.getIn(['player','songList'])
     // currentSongIndex: state.getIn(['player','currentSongIndex'])
   }))
 
@@ -132,7 +132,7 @@ const ZYAppPlayFooter =  memo(function(props) {
   }
 
   const musicEnded = () => {
-    if(loopType === 2) {
+    if(loopType === 2 || songList.length === 1) {
       audioRef.current.currentTime = 0
       audioRef.current.play()
     } else {

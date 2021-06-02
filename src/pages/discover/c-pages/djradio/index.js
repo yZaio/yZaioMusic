@@ -1,9 +1,11 @@
 import React, { memo } from 'react'
 
+import ZYEmptyPage from "components/empty-page";
+
 const ZYDjradio =  memo(function(props) {
   return (
     <div>
-      <h2>ZYDjradio</h2>
+      <ZYEmptyPage title='ZY主播电台'></ZYEmptyPage>
     </div>
   )
 })

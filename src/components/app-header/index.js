@@ -8,6 +8,8 @@ import { headerLinks } from "common/local-data";
 import { Input } from 'antd';
 import { SearchOutlined } from '@ant-design/icons'
 
+import logo from './../../assets/img/yZaioMusic.png'
+
 const ZyAppHeader =  memo(function(props) {
 
 
@@ -32,7 +34,10 @@ const ZyAppHeader =  memo(function(props) {
     <AppHeader>
       <div className="content wrap-v1">
         <div className="left">
-          <a href="#/" className="logo sprite_01">网易云音乐</a>
+          <a href="/#" className='logo'>
+            <img src={logo} alt="" />
+            <span>yZaio音乐库</span>
+          </a>
           {
             headerLinks.map((item,index) => {
               return (

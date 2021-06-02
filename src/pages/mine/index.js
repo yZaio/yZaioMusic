@@ -1,9 +1,11 @@
 import React, { memo } from 'react'
 
+import ZYEmptyPage from "components/empty-page";
+
 const ZYMine =  memo(function(props) {
   return (
     <div>
-      <h2>ZYMine</h2>
+      <ZYEmptyPage title='ZY我的音乐'></ZYEmptyPage>
     </div>
   )
 })

@@ -17,12 +17,27 @@ export const AppHeader = styled.div`
     .left {
       display: flex;
 
+
       .logo {
-        display: block;
+        display: flex;
         width: 176px;
         height: 69px;
         background-position: 0 0;
-        text-indent: -9999px;
+        align-items: center;
+        text-decoration: none;
+        //text-indent: -9999px;
+
+        img {
+          width: 32px;
+          height: 32px;
+        }
+
+        span {
+          margin-left: 10px;
+          font-size: 18px;
+          color: #ffffff;
+          font-weight: bold;
+        }
       }
 
       .selectItem {
