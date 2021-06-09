@@ -1,7 +1,9 @@
-import React, { memo } from 'react'
+import React, { memo, Suspense } from 'react'
 
-import { HashRouter } from 'react-router-dom';
-import { renderRoutes } from "react-router-config";
+import { HashRouter, withRouter } from 'react-router-dom';
+
+// import {renderRoutes} from "react-router-config";
+import {renderRoutes} from "utils/renderRoutes";
 
 import routes from "./router";
 
@@ -11,15 +13,20 @@ import ZYAppPlayFooter from "pages/player/app-player-footer";
 
 
 
-export default memo(function App() {
+const App = function (props) {
+
   return (
     <div>
       <HashRouter>
         <ZyAppHeader></ZyAppHeader>
-        {renderRoutes(routes)}
+        <Suspense fallback={<div>page loading</div>}>
+          {renderRoutes(routes,'')}
+        </Suspense>
         <ZyAppFooter></ZyAppFooter>
         <ZYAppPlayFooter></ZYAppPlayFooter>
       </HashRouter>
     </div>
   )
-})
+}
+
+export default withRouter(memo(App))

@@ -1,16 +1,31 @@
-import React, { memo } from 'react'
+import React, { memo, useState } from 'react'
 import {NavLink} from "react-router-dom";
 
 import { AppHeader } from "./style";
 
 import { headerLinks } from "common/local-data";
 
-import { Input } from 'antd';
+import { Input, Modal } from 'antd';
 import { SearchOutlined } from '@ant-design/icons'
 
 import logo from './../../assets/img/yZaioMusic.png'
 
 const ZyAppHeader =  memo(function(props) {
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const aClick = (e) => {
+    e.preventDefault();
+    setIsModalVisible(true)
+  }
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
 
 
   const topLink = (item,index) => {
@@ -24,7 +39,7 @@ const ZyAppHeader =  memo(function(props) {
       )
     } else {
       return (
-        <a href={item.link}>{item.title}</a>
+        <a href='#/' onClick={e => {aClick(e)}}>{item.title}</a>
       )
     }
   }
@@ -72,6 +87,10 @@ const ZyAppHeader =  memo(function(props) {
           <div className={'creator'}>创作者中心</div>
           <div className={'login'}>登录</div>
         </div>
+
+        <Modal title="提示" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+          <p>功能敬请期待</p>
+        </Modal>
       </div>
     </AppHeader>
   )

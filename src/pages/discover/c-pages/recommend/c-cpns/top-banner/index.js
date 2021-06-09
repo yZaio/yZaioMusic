@@ -8,6 +8,7 @@ import {getTopBannersAction} from "../../store/actionCreators";
 import { TopBanner } from "./style";
 
 const ZYTopBanner =  memo(function(props) {
+
   const [currentIndex, setCurrentIndex] = useState(0)
 
 

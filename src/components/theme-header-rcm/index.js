@@ -1,10 +1,18 @@
 import React, { memo } from 'react'
 
+import { withRouter } from 'react-router-dom'
+
 import {ThemeHeaderRcm} from "./style";
 
 const ZYThemeHeaderRcm =  memo(function(props) {
   const { title , list = [] } = props
   console.log(list)
+
+  // const aaaClick = () => {
+  //   props.history.push({
+  //     pathname: '/discover/songs'
+  //   })
+  // }
 
   return (
     <ThemeHeaderRcm>
@@ -15,7 +23,7 @@ const ZYThemeHeaderRcm =  memo(function(props) {
           {
             list.map((item,index) => {
               return (
-                <span className={'listItem'} key={item}>
+                <span className={'listItem'} key={item} >
                   <span>{item}</span>
                   { index === list.length-1 ? '' : <span>|</span> }
                 </span>
@@ -31,4 +39,4 @@ const ZYThemeHeaderRcm =  memo(function(props) {
     </ThemeHeaderRcm>
   )
 })
-export default ZYThemeHeaderRcm
+export default withRouter(ZYThemeHeaderRcm)

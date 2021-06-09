@@ -4,7 +4,8 @@ import { Discover } from "./style";
 
 import { dicoverMenu } from "common/local-data";
 import {NavLink} from "react-router-dom";
-import {renderRoutes} from "react-router-config";
+// import {renderRoutes} from "react-router-config";
+import {renderRoutes} from "utils/renderRoutes";
 
 const ZYDiscover =  memo(function(props) {
   const {route} = props;
@@ -26,7 +27,7 @@ const ZYDiscover =  memo(function(props) {
 
       </div>
 
-      {renderRoutes(route.routes)}
+      {renderRoutes(route.routes,'')}
 
     </Discover>
   )
